@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Spend Tracker</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_spend">Add Spend</string>
+    <string name="description">Description</string>
+    <string name="amount">Amount</string>
+    <string name="add_new_spend">Add New Spend</string>
+</resources>
