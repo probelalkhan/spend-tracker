@@ -7,48 +7,42 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.common.truth.Truth.assertThat
 import junit.framework.TestCase
+import net.simplifiedcoding.spendtracker.data.Spend
 import net.simplifiedcoding.spendtracker.data.SpendsDatabase
 import net.simplifiedcoding.spendtracker.data.SpendsTrackerDataSource
 import net.simplifiedcoding.spendtracker.getOrAwaitValue
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.io.IOException
+import java.util.*
+
 
 @RunWith(AndroidJUnit4::class)
-class SpendViewModelTest : TestCase() {
+class SpendViewModelTest {
 
-    private lateinit var spendsDatabase: SpendsDatabase
     private lateinit var viewModel: SpendViewModel
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Before
-    public override fun setUp() {
+    fun setUp() {
         val context = ApplicationProvider.getApplicationContext<Context>()
-        spendsDatabase = Room.inMemoryDatabaseBuilder(
-            context, SpendsDatabase::class.java
-        ).allowMainThreadQueries().build()
-        val dataSource = SpendsTrackerDataSource(spendsDatabase.getSpendDao())
+        val db = Room.inMemoryDatabaseBuilder(context, SpendsDatabase::class.java)
+            .allowMainThreadQueries().build()
+        val dataSource = SpendsTrackerDataSource(db.getSpendDao())
         viewModel = SpendViewModel(dataSource)
     }
 
-    @After
-    @Throws(IOException::class)
-    fun closeDb() {
-        spendsDatabase.close()
-    }
-
     @Test
-    fun testAddingSpend() {
-        viewModel.addSpend(100, "Eggs")
+    fun testSpendViewModel(){
+        viewModel.addSpend(170, "Bought some flowers")
         viewModel.getLast20Spends()
         val result = viewModel.last20SpendsLiveData.getOrAwaitValue().find {
-            it.amount == 100 && it.description == "Eggs"
+            it.amount == 170 && it.description == "Bought some flowers"
         }
         assertThat(result != null).isTrue()
     }
+
 }
