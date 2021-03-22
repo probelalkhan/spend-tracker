@@ -19,25 +19,27 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class AddSpendFragmentTest : TestCase(){
+class AddSpendFragmentTest {
 
     private lateinit var scenario: FragmentScenario<AddSpendFragment>
 
     @Before
-    fun setup(){
+    fun setup() {
         scenario = launchFragmentInContainer(themeResId = R.style.Theme_SpendTracker)
         scenario.moveToState(Lifecycle.State.STARTED)
     }
 
     @Test
-    fun testAddingSpend(){
+    fun testAddingSpend() {
         val amount = 100
         val desc = "Bought Eggs"
+        //Espresso Matcher and Action
         onView(withId(R.id.edit_text_amount)).perform(typeText(amount.toString()))
         onView(withId(R.id.edit_text_description)).perform(typeText(desc))
         Espresso.closeSoftKeyboard()
         onView(withId(R.id.button_add)).perform(click())
-        assertThat(onView(withId(R.id.text_view_success_message)).check(matches(withText("Spend Added"))))
-    }
 
+        //Assertion
+        onView(withId(R.id.text_view_success_message)).check(matches(withText("Spend Added")))
+    }
 }
